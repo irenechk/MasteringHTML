@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DVD Legend Arcade</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<!-- CRT Overlay -->
+<div class="scanlines"></div>
+
+<!-- INTRO -->
+<div id="intro">
+    <div class="scene active"><h1>1989...</h1></div>
+    <div class="scene"><h1>A Screensaver Changed Everything</h1></div>
+    <div class="scene"><h1>One Logo. Infinite Bounces.</h1></div>
+    <div class="scene"><h1 class="bigTitle">DVD BOUNCE</h1></div>
+</div>
+
+<!-- MAIN -->
+<div id="mainSite">
+
+<nav>
+    <div class="logo">DVD BOUNCE</div>
+    <div>
+        <button data-tab="home">HOME</button>
+        <button data-tab="screensaver">SCREEN SAVER</button>
+    </div>
+</nav>
+
+<section id="home" class="tab activeTab">
+    <h2 class="retroText">WELCOME PLAYER</h2>
+
+    <p class="small">
+        The DVD logo started as a simple burn-in prevention animation.
+        It became a global meme when millions waited for the perfect corner hit.
+    </p>
+
+    <div class="dvdInfo">
+        <p>> Click anywhere to teleport the logo.</p>
+        <p>> Listen for the legendary FAAAA sound.</p>
+        <p>> Wait for the perfect CORNER HIT.</p>
+        <p>> Increase level and speed.</p>
+    </div>
+
+    <button id="startExperience">START EXPERIENCE</button>
+</section>
+
+<section id="screensaver" class="tab">
+
+    <div class="game-controls">
+        <button id="startGame">START GAME MODE</button>
+        <div class="scoreBoard">
+            SCORE: <span id="score">0</span> |
+            CORNERS: <span id="corners">0</span> |
+            LEVEL: <span id="level">1</span>
+        </div>
+    </div>
+
+    <div id="dvdContainer">
+        <div id="dvdLogo">DVD</div>
+        <div id="explosion"></div>
+    </div>
+
+    <div class="leaderboard">
+        <h3>LEADERBOARD</h3>
+        <ol id="leaderboardList"></ol>
+    </div>
+
+</section>
+
+</div>
+
+<!-- AUDIO -->
+<audio id="bgMusic" loop>
+<source src="BGforgame.mp3">
+</audio>
+
+<audio id="memeSound">
+<source src="faaah.mp3">
+</audio>
+
+<script src="script.js"></script>
+</body>
+</html>
