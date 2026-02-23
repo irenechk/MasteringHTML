@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Notion – Build something beautiful</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* macOS style wallpaper behind */
+      background: radial-gradient(circle at 0 0, #0f172a 0, #1d4ed8 32%, #f97316 68%, #000 100%);
+    }
+
+    .frame {
+      width: 1120px;
+      max-width: calc(100% - 40px);
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 28px 80px rgba(15, 23, 42, 0.55);
+      overflow: hidden;
+    }
+
+    /* Browser top bar imitation */
+    .browser-bar {
+      height: 32px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f3f4f6;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #e5e7eb;
+    }
+
+    .dot.red { background: #f87171; }
+    .dot.yellow { background: #facc15; }
+    .dot.green { background: #4ade80; }
+
+    .nav {
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 14px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .logo-box {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 1.8px solid #111827;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .nav-links a {
+      color: #4b5563;
+      text-decoration: none;
+      margin-right: 18px;
+    }
+
+    .nav-links a:last-child {
+      margin-right: 0;
+    }
+
+    .nav-links a:hover {
+      color: #111827;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .nav-right a {
+      color: #4b5563;
+      text-decoration: none;
+    }
+
+    .nav-right a:hover {
+      color: #111827;
+    }
+
+    .nav-right button {
+      padding: 7px 16px;
+      border-radius: 7px;
+      border: 1px solid #111827;
+      background: #111827;
+      color: #fff;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      padding: 46px 56px 52px;
+      gap: 40px;
+    }
+
+    .hero-title {
+      font-size: 56px;
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      color: #111827;
+      margin-bottom: 20px;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: #4b5563;
+      max-width: 360px;
+      margin-bottom: 26px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .hero-ctas .primary {
+      padding: 11px 24px;
+      border-radius: 8px;
+      border: none;
+      background: #2563eb;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .hero-ctas .secondary {
+      padding: 11px 24px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      color: #111827;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .trusted {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    .logo-row {
+      display: flex;
+      gap: 26px;
+      font-size: 13px;
+      color: #111827;
+      opacity: 0.85;
+    }
+
+    .logo-row span {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 500;
+      font-size: 11px;
+    }
+
+    /* Right illustration – closer to Notion style */
+    .hero-illustration {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .scene {
+      display: flex;
+      align-items: flex-end;
+      gap: 18px;
+    }
+
+    .avatar {
+      width: 94px;
+      height: 150px;
+      border-radius: 24px;
+      border: 2px solid #111827;
+      position: relative;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .avatar-head {
+      position: absolute;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 2px solid #111827;
+      background: #fff;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 10px;
+    }
+
+    .avatar-body-dots {
+      position: absolute;
+      inset: 68px 10px 10px;
+      background-image: radial-gradient(#111827 1.2px, transparent 1.2px);
+      background-size: 9px 9px;
+    }
+
+    .board {
+      position: absolute;
+      width: 86px;
+      height: 64px;
+      border-radius: 10px;
+      border: 2px solid #111827;
+      background: #fff;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 62px;
+    }
+
+    .board-inner {
+      position: absolute;
+      inset: 10px;
+      border: 2px dashed #111827;
+    }
+
+    .floating {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      border: 2px solid #111827;
+      background: #fff;
+    }
+
+    .floating.note {
+      top: -18px;
+      right: -18px;
+    }
+
+    .floating.clock {
+      top: 12px;
+      right: -26px;
+      border-radius: 50%;
+    }
+
+    .clock-hand {
+      position: absolute;
+      width: 2px;
+      height: 18px;
+      background: #111827;
+      left: 50%;
+      top: 10px;
+      transform-origin: bottom center;
+      transform: translateX(-50%) rotate(-40deg);
+    }
+
+    @media (max-width: 900px) {
+      .frame {
+        max-width: 100%;
+        border-radius: 0;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 32px 24px 40px;
+      }
+
+      .hero-illustration {
+        order: -1;
+      }
+
+      .hero-title {
+        font-size: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <div class="browser-bar">
+      <div class="dot red"></div>
+      <div class="dot yellow"></div>
+      <div class="dot green"></div>
+    </div>
+
+    <header class="nav">
+      <div class="nav-left">
+        <div class="logo">
+          <div class="logo-box">N</div>
+          <span>Notion</span>
+        </div>
+        <nav class="nav-links">
+          <a href="#">Product</a>
+          <a href="#">Teams</a>
+          <a href="#">Individuals</a>
+          <a href="#">Community</a>
+          <a href="#">Pricing</a>
+        </nav>
+      </div>
+      <div class="nav-right">
+        <a href="#">Request a demo</a>
+        <a href="#">Log in</a>
+        <button>Get Notion free</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h1 class="hero-title">
+          Build<br>something<br>beautiful.
+        </h1>
+        <p class="hero-sub">
+          Notion helps you and your team get more done with peace of mind.[web:10]
+        </p>
+
+        <div class="hero-ctas">
+          <button class="primary">Download free</button>
+          <button class="secondary">Request a demo</button>
+        </div>
+
+        <div class="trusted">Trusted by teams at</div>
+        <div class="logo-row">
+          <span>AMAZON</span>
+          <span>NETFLIX</span>
+          <span>ATLASSIAN</span>
+          <span>FIGMA</span>
+        </div>
+      </div>
+
+      <div class="hero-illustration">
+        <div class="scene">
+          <!-- Person 1 -->
+          <div class="avatar">
+            <div class="avatar-head"></div>
+            <div class="avatar-body-dots"></div>
+          </div>
+
+          <!-- Person 2 with board -->
+          <div class="avatar">
+            <div class="avatar-head"></div>
+            <div class="board">
+              <div class="board-inner"></div>
+            </div>
+            <div class="avatar-body-dots"></div>
+          </div>
+
+          <!-- Person 3 with floating cards -->
+          <div class="avatar">
+            <div class="avatar-head"></div>
+            <div class="avatar-body-dots"></div>
+
+            <div class="floating note"></div>
+            <div class="floating clock">
+              <div class="clock-hand"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

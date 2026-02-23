@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Irene Koner</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI, sans-serif;
+scroll-behavior:smooth;
+}
+
+body{
+color:#e6e6e6;
+background:#be487b;
+overflow-x:hidden;
+}
+
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:linear-gradient(120deg,#d1679a,#8a3063,#821b66,#c63e7e);
+background-size:300% 300%;
+animation:metalMove 12s infinite linear;
+z-index:-1;
+}
+
+@keyframes metalMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+
+nav{
+position:fixed;
+top:0;
+width:100%;
+display:flex;
+justify-content:space-between;
+padding:20px 40px;
+background:rgba(229, 97, 174, 0.5);
+backdrop-filter:blur(10px);
+z-index:1000;
+}
+
+nav h2{
+color:rgb(14, 13, 13);
+}
+
+nav a{
+color:#151010;
+text-decoration:none;
+margin-left:20px;
+font-size:14px;
+}
+
+nav a:hover{
+color:white;
+}
+
+
+.container{
+max-width:1100px;
+margin:120px auto 40px;
+padding:40px;
+background:rgba(30,30,30,0.6);
+border-radius:20px;
+box-shadow:0 0 40px rgba(0,0,0,0.8);
+backdrop-filter:blur(15px);
+}
+
+/* ---------- PROFILE ---------- */
+
+.profile{
+display:flex;
+align-items:center;
+gap:30px;
+flex-wrap:wrap;
+}
+
+.profile img{
+width:130px;
+height:130px;
+border-radius:50%;
+border:3px solid silver;
+box-shadow:0 0 20px rgba(255,255,255,0.3);
+}
+
+h1{
+color:silver;
+}
+
+section{
+margin-top:40px;
+}
+
+h2{
+margin-bottom:10px;
+color:#d9d9d9;
+border-bottom:1px solid rgba(255,255,255,0.2);
+padding-bottom:5px;
+}
+
+
+.skill{
+margin:12px 0;
+}
+
+.bar{
+height:10px;
+background:#bcaeae;
+border-radius:10px;
+overflow:hidden;
+}
+
+.fill{
+height:100%;
+background:linear-gradient(90deg,silver,#aaa);
+width:0;
+animation:load 2s forwards;
+}
+
+@keyframes load{
+from{width:0}
+}
+
+
+.projects{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.card{
+padding:20px;
+background:linear-gradient(145deg,#1e1e1e,#2a2a2a);
+border-radius:15px;
+transition:0.4s;
+border:1px solid rgba(255,255,255,0.1);
+}
+
+.card:hover{
+transform:translateY(-10px) scale(1.03);
+box-shadow:0 0 20px rgba(255,255,255,0.2);
+}
+
+
+.btn{
+display:inline-block;
+margin-top:15px;
+padding:10px 18px;
+background:linear-gradient(90deg,#c0c0c0,#8f8f8f);
+color:black;
+text-decoration:none;
+border-radius:8px;
+font-weight:bold;
+transition:0.3s;
+}
+
+.btn:hover{
+box-shadow:0 0 15px rgba(255,255,255,0.5);
+transform:translateY(-2px);
+}
+
+
+.contact a{
+margin-right:15px;
+}
+
+
+footer{
+text-align:center;
+margin-top:40px;
+color:#777;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+<h2>Irene Koner</h2>
+<div>
+<a href="#about">About</a>
+<a href="#skills">Skills</a>
+<a href="#languages">Languages</a>
+<a href="#projects">Projects</a>
+<a href="#contact">Contact</a>
+</div>
+</nav>
+
+<div class="container">
+
+
+<div class="profile">
+<img src="https://i.pinimg.com/736x/5e/9d/27/5e9d27a2ab5ed2cdfe5b0dadff8a7faa.jpg">
+<div>
+<h1>Irene Koner</h1>
+<p>BTech Computer Science Student | Aspiring Developer</p>
+<a class="btn" href="#">Download Resume</a>
+</div>
+</div>
+
+
+<section id="about">
+<h2>About Me</h2>
+<p>
+Hi! I'm Irene Koner, a passionate Computer Science Engineering student with a strong interest in
+technology, creativity, and innovation. I enjoy building projects that combine technical knowledge
+with modern design principles.
+</p>
+<br>
+
+<p>
+My primary focus is web development and software technologies, where I continuously improve my
+skills in programming, version control, and problem-solving. I am a motivated learner who enjoys
+exploring new tools and collaborating with others to create impactful solutions.
+</p>
+<br>
+<p>
+Beyond academics, I engage in music and sports, which help me develop discipline and teamwork.
+My goal is to gain industry experience through internships and grow into a skilled developer.
+</p>
+</section>
+
+
+<section id="skills">
+<h2>Technical Skills</h2>
+
+<div class="skill">Python
+<div class="bar"><div class="fill" style="width:85%"></div></div>
+</div>
+
+<div class="skill">HTML
+<div class="bar"><div class="fill" style="width:90%"></div></div>
+</div>
+
+<div class="skill">CSS
+<div class="bar"><div class="fill" style="width:85%"></div></div>
+</div>
+
+<div class="skill">JavaScript
+<div class="bar"><div class="fill" style="width:70%"></div></div>
+</div>
+
+<div class="skill">Git & GitHub
+<div class="bar"><div class="fill" style="width:75%"></div></div>
+</div>
+
+</section>
+
+
+<section id="languages">
+<h2>Languages</h2>
+
+<div class="skill">English
+<div class="bar"><div class="fill" style="width:95%"></div></div>
+</div>
+
+<div class="skill">Hindi
+<div class="bar"><div class="fill" style="width:90%"></div></div>
+</div>
+
+<div class="skill">Marathi
+<div class="bar"><div class="fill" style="width:85%"></div></div>
+</div>
+
+<div class="skill">Kannada
+<div class="bar"><div class="fill" style="width:70%"></div></div>
+</div>
+
+</section>
+
+
+<section id="projects">
+<h2>Projects</h2>
+
+<div class="projects">
+
+<div class="card">
+<h3>Fashion Color Analysis App</h3>
+<p>AI-based fashion recommendation system that suggests outfits based on color theory.</p>
+<a class="btn" href="#">View</a>
+</div>
+
+<div class="card">
+<h3>Nutrition Tracker</h3>
+<p>Web application to track daily food intake with charts and analytics.</p>
+<a class="btn" href="#">View</a>
+</div>
+
+<div class="card">
+<h3>Storytelling App</h3>
+<p>Interactive storytelling platform using DOM manipulation and dynamic UI.</p>
+<a class="btn" href="#">View</a>
+</div>
+
+</div>
+
+</section>
+
+
+<section id="contact">
+<h2>Contact</h2>
+
+<div class="contact">
+<a class="btn" href="https://github.com" target="_blank">GitHub</a>
+<a class="btn" href="https://linkedin.com" target="_blank">LinkedIn</a>
+</div>
+
+</section>
+
+<footer>
+© 2026 Irene Koner | Portfolio
+</footer>
+
+</div>
+
+</body>
+
+</html>

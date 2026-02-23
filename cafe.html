@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Aurora Coffee House</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+body{
+    background:#f6efe7;
+    color:#333;
+}
+
+/* NAVBAR */
+
+.navbar{
+    position:sticky;
+    top:0;
+    width:100%;
+    background:#4b2e2b;
+    padding:18px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    z-index:1000;
+}
+
+.logo{
+    color:white;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.nav-links a{
+    color:white;
+    text-decoration:none;
+    margin-left:25px;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:#d9a066;
+}
+
+/* HERO */
+
+.hero{
+    height:90vh;
+    background:
+        linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+        url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085")
+        center/cover no-repeat;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:white;
+}
+
+.hero h1{
+    font-size:52px;
+    margin-bottom:15px;
+}
+
+.hero p{
+    font-size:20px;
+    margin-bottom:25px;
+}
+
+.hero button{
+    padding:12px 28px;
+    border:none;
+    background:#d9a066;
+    color:white;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+/* SECTION */
+
+section{
+    padding:80px 8%;
+}
+
+/* ABOUT */
+
+.about{
+    display:flex;
+    align-items:center;
+    gap:60px;
+}
+
+.about img{
+    width:50%;
+    border-radius:12px;
+}
+
+.about-text{
+    width:50%;
+}
+
+.about-text h2{
+    font-size:32px;
+    margin-bottom:15px;
+    color:#4b2e2b;
+}
+
+/* MENU SECTION */
+
+.menu{
+    background:white;
+}
+
+.section-title{
+    text-align:center;
+    font-size:34px;
+    margin-bottom:50px;
+    color:#4b2e2b;
+}
+
+/* CATEGORY */
+
+.menu-category{
+    margin-bottom:60px;
+}
+
+.menu-category h3{
+    font-size:26px;
+    margin-bottom:25px;
+    color:#6b4226;
+    border-left:5px solid #d9a066;
+    padding-left:10px;
+}
+
+/* GRID */
+
+.menu-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:30px;
+}
+
+/* CARD */
+
+.menu-card{
+    background:#fff;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 6px 18px rgba(0,0,0,0.1);
+    transition:.3s;
+}
+
+.menu-card:hover{
+    transform:translateY(-8px);
+}
+
+.menu-card img{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+}
+
+.menu-content{
+    padding:15px;
+}
+
+.menu-content h4{
+    margin-bottom:5px;
+    color:#4b2e2b;
+}
+
+.price{
+    color:#d9a066;
+    font-weight:bold;
+}
+
+/* GALLERY */
+
+.gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.gallery-grid img{
+    width:100%;
+    height:250px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+/* CONTACT */
+
+.contact{
+    background:#4b2e2b;
+    color:white;
+    text-align:center;
+    border-radius:12px;
+}
+
+/* FOOTER */
+
+footer{
+    text-align:center;
+    padding:20px;
+    background:#2b1a18;
+    color:white;
+    margin-top:40px;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    .about{
+        flex-direction:column;
+    }
+
+    .about img,
+    .about-text{
+        width:100%;
+    }
+
+    .hero h1{
+        font-size:36px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">☕ Aurora Coffee</div>
+
+    <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Menu</a>
+        <a href="#">Gallery</a>
+        <a href="#">Contact</a>
+    </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+    <div>
+        <h1>Crafted Coffee, Cozy Vibes</h1>
+        <p>Experience the perfect blend of aroma and comfort</p>
+        <button>View Menu</button>
+    </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about">
+
+    <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb">
+
+    <div class="about-text">
+        <h2>Our Story</h2>
+        <p>
+            Aurora Coffee House offers handcrafted drinks,
+            warm pastries, and relaxing ambience.
+            Every cup is brewed with passion.
+        </p>
+    </div>
+
+</section>
+
+<!-- MENU -->
+<section class="menu">
+
+<h2 class="section-title">Our Menu</h2>
+
+<!-- COFFEE -->
+<div class="menu-category">
+
+<h3>☕ Coffee</h3>
+
+<div class="menu-grid">
+
+<div class="menu-card">
+<img src="https://images.unsplash.com/photo-1511920170033-f8396924c348">
+<div class="menu-content">
+<h4>Latte</h4>
+<p>Creamy milk with espresso</p>
+<div class="price">₹180</div>
+</div>
+</div>
+
+<div class="menu-card">
+<img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93">
+<div class="menu-content">
+<h4>Cappuccino</h4>
+<p>Rich foam & bold flavor</p>
+<div class="price">₹190</div>
+</div>
+</div>
+
+<div class="menu-card">
+<img src="https://images.unsplash.com/photo-1498804103079-a6351b050096">
+<div class="menu-content">
+<h4>Americano</h4>
+<p>Strong & smooth</p>
+<div class="price">₹160</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+<!-- TEA -->
+<div class="menu-category">
+
+<h3>🍵 Tea</h3>
+
+<div class="menu-grid">
+
+<div class="menu-card">
+<img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574">
+<div class="menu-content">
+<h4>Vanilla Tea</h4>
+<div class="price">₹125</div>
+</div>
+</div>
+
+<div class="menu-card">
+<img src="https://images.unsplash.com/photo-1523920290228-4f321a939b4c">
+<div class="menu-content">
+<h4>Black Tea</h4>
+<div class="price">₹110</div>
+</div>
+</div>
+
+<div class="menu-card">
+<img src="https://i.pinimg.com/736x/97/71/42/9771421c3da5319d7621ab87666ae293.jpg">
+<div class="menu-content">
+<h4>Matcha</h4>
+<div class="price">₹140</div>
+</div>
+</div>
+
+<div class="menu-card">
+<img src="https://i.pinimg.com/736x/59/a6/e6/59a6e60897ac6d87c2b5a581d45782fb.jpg">
+<div class="menu-content">
+<h4>Green Tea</h4>
+<div class="price">₹130</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- PASTRIES -->
+<div class="menu-category">
+
+<h3>🥐 Pastries</h3>
+
+<div class="menu-grid">
+
+<div class="menu-card">
+<img src="https://images.unsplash.com/photo-1488477181946-6428a0291777">
+<div class="menu-content">
+<h4>Slurp Strawberry</h4>
+<div class="price">₹120</div>
+</div>
+</div>
+
+<div class="menu-card">
+<img src="https://images.unsplash.com/photo-1603532648955-039310d9ed75">
+<div class="menu-content">
+<h4>Muffin</h4>
+<div class="price">₹90</div>
+</div>
+</div>
+
+<div class="menu-card">
+<img src="https://images.unsplash.com/photo-1551024601-bec78aea704b">
+<div class="menu-content">
+<h4>Stacked MadDonuts</h4>
+<div class="price">₹150</div>
+</div>
+</div>
+
+</div>
+</div>
+
+</section>
+
+<!-- GALLERY -->
+<section>
+
+<h2 class="section-title">Coffee Moments</h2>
+
+<div class="gallery-grid">
+<img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31">
+<img src="https://images.unsplash.com/photo-1453614512568-c4024d13c247">
+<img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814">
+</div>
+
+</section>
+
+<!-- CONTACT -->
+<section class="contact">
+
+<h2>Visit Us</h2>
+<p>📍 MG Road, Bangalore</p>
+<p>📞 +91 98765 43210</p>
+<p>⏰ 8 AM – 10 PM</p>
+
+</section>
+
+<footer>
+© 2026 Aurora Coffee House | Made with ❤️
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aurélien Noir — Photography</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Inter', sans-serif;
+    background:#0e0e0e;
+    color:#f5f5f5;
+    overflow-x:hidden;
+}
+
+/* ---------- NAV ---------- */
+
+nav{
+    position:fixed;
+    top:0;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    padding:25px 60px;
+    z-index:1000;
+    background:linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
+}
+
+.logo{
+    font-family:'Playfair Display', serif;
+    font-size:22px;
+    letter-spacing:3px;
+}
+
+nav ul{
+    display:flex;
+    gap:30px;
+    list-style:none;
+}
+
+nav a{
+    text-decoration:none;
+    color:#ddd;
+    font-size:14px;
+    letter-spacing:1px;
+    transition:.3s;
+}
+
+nav a:hover{
+    color:white;
+}
+
+/* ---------- HERO ---------- */
+
+.hero{
+    height:100vh;
+    background:url("https://i.pinimg.com/736x/92/2b/22/922b22759d6f4860d31cd3b0728ee55d.jpg") center/cover no-repeat;
+    display:flex;
+    align-items:center;
+    padding-left:8%;
+    position:relative;
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+    max-width:600px;
+}
+
+.hero h1{
+    font-family:'Playfair Display', serif;
+    font-size:72px;
+    line-height:1.1;
+    margin-bottom:20px;
+}
+
+.hero p{
+    font-size:18px;
+    opacity:.85;
+    margin-bottom:30px;
+}
+
+.btn{
+    padding:12px 28px;
+    border:1px solid #fff;
+    background:transparent;
+    color:white;
+    cursor:pointer;
+    letter-spacing:1px;
+    transition:.4s;
+}
+
+.btn:hover{
+    background:white;
+    color:black;
+}
+
+/* ---------- HORIZONTAL GALLERY ---------- */
+
+.gallery-section{
+    padding:120px 0;
+    overflow:hidden;
+}
+
+.gallery-title{
+    font-family:'Playfair Display', serif;
+    font-size:40px;
+    margin-left:8%;
+    margin-bottom:40px;
+}
+
+.gallery{
+    display:flex;
+    gap:40px;
+    padding-left:8%;
+    overflow-x:auto;
+    scroll-behavior:smooth;
+}
+
+.gallery::-webkit-scrollbar{
+    display:none;
+}
+
+.card{
+    min-width:350px;
+    height:500px;
+    position:relative;
+    overflow:hidden;
+    border-radius:6px;
+}
+
+.card img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform .6s;
+}
+
+.card:hover img{
+    transform:scale(1.1);
+}
+
+.card-overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    display:flex;
+    align-items:flex-end;
+    padding:20px;
+    font-family:'Playfair Display', serif;
+    font-size:22px;
+}
+
+/* ---------- ABOUT ---------- */
+
+.about{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    padding:120px 8%;
+    gap:60px;
+    align-items:center;
+}
+
+.about img{
+    width:100%;
+    border-radius:10px;
+}
+
+.about h2{
+    font-family:'Playfair Display', serif;
+    font-size:42px;
+    margin-bottom:20px;
+}
+
+.about p{
+    line-height:1.7;
+    opacity:.8;
+}
+
+/* ---------- TESTIMONIAL ---------- */
+
+.quote{
+    padding:100px 15%;
+    text-align:center;
+    background:#111;
+    font-family:'Playfair Display', serif;
+    font-size:28px;
+    line-height:1.6;
+}
+
+/* ---------- CONTACT ---------- */
+
+.contact{
+    padding:120px 8%;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:40px;
+}
+
+.contact h3{
+    font-family:'Playfair Display', serif;
+    font-size:32px;
+    margin-bottom:20px;
+}
+
+input, textarea{
+    width:100%;
+    padding:12px;
+    background:#1a1a1a;
+    border:none;
+    color:white;
+    margin-bottom:15px;
+}
+
+footer{
+    text-align:center;
+    padding:30px;
+    background:#000;
+    font-size:14px;
+    opacity:.6;
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media(max-width:900px){
+
+.hero h1{
+    font-size:48px;
+}
+
+.about{
+    grid-template-columns:1fr;
+}
+
+nav{
+    padding:20px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">AURÉLIEN NOIR</div>
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Portfolio</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Capturing Silence Between Moments</h1>
+        <p>Editorial, portrait, and cinematic storytelling through refined light and emotion.</p>
+        <button class="btn">View Portfolio</button>
+    </div>
+</section>
+
+<!-- GALLERY -->
+
+<section class="gallery-section">
+    <div class="gallery-title">Selected Works</div>
+
+    <div class="gallery">
+
+        <div class="card">
+            <img src="https://i.pinimg.com/736x/05/04/da/0504da029488fed8679b3b2e8ff7760d.jpg">
+            <div class="card-overlay">Elegance</div>
+        </div>
+
+        <div class="card">
+            <img src="https://i.pinimg.com/1200x/a7/e0/56/a7e056ce4f2a5aed0031f9f5ca578fae.jpg">
+            <div class="card-overlay">Vintage Soul</div>
+        </div>
+
+        <div class="card">
+            <img src="https://i.pinimg.com/736x/88/e3/79/88e37920fbce5ac318cf7fa122b09734.jpg">
+            <div class="card-overlay">Emotion</div>
+        </div>
+
+        <div class="card">
+            <img src="https://i.pinimg.com/736x/44/0a/be/440abe02ff2cff0f6fce3b0ed3a41e0a.jpg">
+            <div class="card-overlay">Timeless</div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ABOUT -->
+
+<section class="about">
+
+    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format&fit=crop">
+
+    <div>
+        <h2>About Aurélien</h2>
+        <p>
+            Aurélien Noir is a fine-art and editorial photographer known for creating cinematic
+            compositions that feel both intimate and timeless. His work blends classical
+            aesthetics with modern storytelling, capturing moments that exist between reality
+            and memory.
+        </p>
+    </div>
+
+</section>
+
+<!-- QUOTE -->
+
+<section class="quote">
+    “Photography is the art of noticing what others overlook.”
+</section>
+
+<!-- CONTACT -->
+
+<section class="contact">
+
+    <div>
+        <h3>Get in Touch</h3>
+        <p>Email: hello@aureliennoir.com</p>
+        <p>Instagram: @aureliennoir</p>
+    </div>
+
+    <div style="flex:1; max-width:400px;">
+        <input type="text" placeholder="Your Name">
+        <input type="email" placeholder="Email">
+        <textarea rows="5" placeholder="Message"></textarea>
+        <button class="btn">Send Message</button>
+    </div>
+
+</section>
+
+<footer>
+© 2026 Aurélien Noir Photography
+</footer>
+
+</body>
+</html>

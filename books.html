@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Velouria Books — Royal Library</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Cormorant+Garamond:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --burgundy:#4b0f19;
+    --gold:#d4af37;
+    --parchment:#f5ecd9;
+    --dark:#1a1a1a;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Cormorant Garamond',serif;
+    background:var(--parchment);
+    color:var(--dark);
+}
+
+/* NAVBAR */
+
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 8%;
+    background:var(--burgundy);
+    color:white;
+    border-bottom:3px solid var(--gold);
+}
+
+.logo{
+    font-family:'Playfair Display',serif;
+    font-size:28px;
+    letter-spacing:2px;
+}
+
+.cart-btn{
+    border:1px solid var(--gold);
+    padding:8px 16px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.cart-btn:hover{
+    background:var(--gold);
+    color:black;
+}
+
+/* HERO */
+
+.hero{
+    height:80vh;
+    background:
+    linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),
+    url("https://images.unsplash.com/photo-1507842217343-583bb7270b66");
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:white;
+}
+
+.hero h1{
+    font-family:'Playfair Display',serif;
+    font-size:70px;
+    letter-spacing:3px;
+}
+
+.hero p{
+    font-size:20px;
+    margin-top:15px;
+}
+
+.hero button{
+    margin-top:25px;
+    padding:12px 28px;
+    background:transparent;
+    border:2px solid var(--gold);
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+    transition:.3s;
+}
+
+.hero button:hover{
+    background:var(--gold);
+    color:black;
+}
+
+/* BOOK GRID */
+
+.section-title{
+    text-align:center;
+    margin:60px 0 20px;
+    font-family:'Playfair Display',serif;
+    font-size:36px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:40px;
+    padding:40px 8%;
+}
+
+.card{
+    background:white;
+    border:1px solid #d8c9a6;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+    transition:.4s;
+    cursor:pointer;
+}
+
+.card:hover{
+    transform:translateY(-10px) scale(1.02);
+    box-shadow:0 20px 40px rgba(0,0,0,.25);
+}
+
+.card img{
+    width:100%;
+    height:320px;
+    object-fit:cover;
+}
+
+.card-body{
+    padding:20px;
+    text-align:center;
+}
+
+.card-title{
+    font-family:'Playfair Display',serif;
+    font-size:20px;
+    margin-bottom:5px;
+}
+
+.price{
+    color:var(--burgundy);
+    font-weight:bold;
+}
+
+/* MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.75);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+
+.modal-content{
+    background:var(--parchment);
+    width:90%;
+    max-width:850px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    border:3px solid var(--gold);
+}
+
+.modal img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.modal-info{
+    padding:40px;
+}
+
+.modal-info h2{
+    font-family:'Playfair Display',serif;
+    margin-bottom:10px;
+}
+
+.add-btn{
+    margin-top:20px;
+    padding:10px 20px;
+    border:2px solid var(--burgundy);
+    background:none;
+    cursor:pointer;
+}
+
+.add-btn:hover{
+    background:var(--burgundy);
+    color:white;
+}
+
+.close{
+    position:absolute;
+    top:20px;
+    right:30px;
+    color:white;
+    font-size:28px;
+    cursor:pointer;
+}
+
+/* CART */
+
+.cart{
+    position:fixed;
+    right:-400px;
+    top:0;
+    width:400px;
+    height:100%;
+    background:white;
+    border-left:3px solid var(--gold);
+    padding:30px;
+    transition:.4s;
+    overflow:auto;
+}
+
+.cart.open{
+    right:0;
+}
+
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:10px;
+}
+
+/* FOOTER */
+
+footer{
+    background:var(--burgundy);
+    color:white;
+    text-align:center;
+    padding:25px;
+    margin-top:50px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:800px){
+.modal-content{
+grid-template-columns:1fr;
+}
+.hero h1{
+font-size:40px;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="logo">Velouria Library</div>
+<div class="cart-btn" onclick="toggleCart()">Cart (<span id="count">0</span>)</div>
+</nav>
+
+<section class="hero">
+<div>
+<h1>Royal Vintage Books</h1>
+<p>Where stories rest upon gilded shelves</p>
+<button>Explore Collection</button>
+</div>
+</section>
+
+<h2 class="section-title">Curated Classics</h2>
+
+<div class="grid" id="grid"></div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+<div class="close" onclick="closeModal()">✕</div>
+<div class="modal-content">
+<img id="modalImg">
+<div class="modal-info">
+<h2 id="modalTitle"></h2>
+<p id="modalDesc"></p>
+<div id="modalPrice"></div>
+<button class="add-btn" onclick="addToCart()">Add to Cart</button>
+</div>
+</div>
+</div>
+
+<!-- CART -->
+<div class="cart" id="cart">
+<h2>Your Collection</h2>
+<div id="cartItems"></div>
+<h3>Total: ₹<span id="total">0</span></h3>
+</div>
+
+<footer>
+<p>© 2026 Velouria Royal Library</p>
+</footer>
+
+<script>
+
+const books = [
+{
+title:"Pride and Prejudice",
+price:100,
+img:"https://i.pinimg.com/1200x/20/af/0f/20af0fe570f8e92918a82a19811535e9.jpg",
+desc:"A timeless romance set in aristocratic England."
+},
+{
+title:"The Great Gatsby",
+price:150,
+img:"https://i.pinimg.com/1200x/6e/f3/f3/6ef3f3fbd7c4680357be522a872bea55.jpg",
+desc:"A tragic story of wealth, love, and illusion."
+},
+{
+title:"Jane Eyre",
+price:120,
+img:"https://i.pinimg.com/1200x/7b/86/8b/7b868b4e0134e35e5bc9aee192714eae.jpg",
+desc:"A gothic novel of resilience and passion."
+},
+{
+title:"Sherlock Holmes",
+price:200,
+img:"https://i.pinimg.com/736x/b1/99/ed/b199ed1dfa18edba477ec8a30373247d.jpg",
+desc:"Classic detective mysteries by Arthur Conan Doyle."
+},
+{
+title:"Wuthering Heights",
+price:180,
+img:"https://i.pinimg.com/1200x/ae/ba/6b/aeba6b301a92e7b1e32eadcda354db59.jpg",
+desc:"A dark romantic tale of love and revenge."
+},
+
+{
+title:"Little Women",
+price:210,
+img:"https://i.pinimg.com/736x/9c/44/81/9c4481520c2916669112d5058873c82d.jpg",
+desc:"A coming-of-age story of four sisters."
+},
+
+{
+title:"Moby Dick",
+price:170,
+img:"https://i.pinimg.com/1200x/76/a1/eb/76a1eb32948994d0ff52800b8cf417dc.jpg",
+desc:"An epic adventure of obsession and the sea."
+},
+
+{
+title:"Dracula",
+price:190,
+img:"https://i.pinimg.com/736x/9d/6c/c8/9d6cc8aa8d86a5d51512b15e72748ef1.jpg",
+desc:"The legendary gothic vampire novel."
+}
+];
+
+let current=null;
+let cart=[];
+
+const grid=document.getElementById("grid");
+
+books.forEach(book=>{
+let card=document.createElement("div");
+card.className="card";
+card.innerHTML=`
+<img src="${book.img}">
+<div class="card-body">
+<div class="card-title">${book.title}</div>
+<div class="price">₹${book.price}</div>
+</div>
+`;
+card.onclick=()=>openModal(book);
+grid.appendChild(card);
+});
+
+function openModal(book){
+current=book;
+modal.style.display="flex";
+modalImg.src=book.img;
+modalTitle.textContent=book.title;
+modalDesc.textContent=book.desc;
+modalPrice.textContent="₹"+book.price;
+}
+
+function closeModal(){
+modal.style.display="none";
+}
+
+function addToCart(){
+cart.push(current);
+updateCart();
+closeModal();
+}
+
+function updateCart(){
+cartItems.innerHTML="";
+let total=0;
+
+cart.forEach(item=>{
+total+=item.price;
+let div=document.createElement("div");
+div.className="cart-item";
+div.innerHTML=`<span>${item.title}</span><span>₹${item.price}</span>`;
+cartItems.appendChild(div);
+});
+
+document.getElementById("total").textContent=total;
+document.getElementById("count").textContent=cart.length;
+}
+
+function toggleCart(){
+cart.classList.toggle("open");
+}
+
+</script>
+
+</body>
+</html>

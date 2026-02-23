@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Future Portal</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+        radial-gradient(circle at 20% 20%, #1b3c59, transparent 40%),
+        radial-gradient(circle at 80% 80%, #0f2027, transparent 40%),
+        #020617;
+    overflow:hidden;
+    color:white;
+}
+
+/* Moving Aurora Background */
+body::before{
+    content:"";
+    position:absolute;
+    width:160%;
+    height:160%;
+    background: conic-gradient(
+        from 0deg,
+        transparent,
+        rgba(0,255,255,0.15),
+        transparent,
+        rgba(124,255,203,0.15),
+        transparent
+    );
+    animation: rotateBg 40s linear infinite;
+}
+
+@keyframes rotateBg{
+    from{ transform:rotate(0deg);}
+    to{ transform:rotate(360deg);}
+}
+
+/* Light beams */
+.beam{
+    position:absolute;
+    width:400px;
+    height:400px;
+    background:radial-gradient(circle, rgba(10, 217, 217, 0.25), transparent 70%);
+    filter:blur(40px);
+    animation: float 12s ease-in-out infinite;
+}
+
+.beam:nth-child(1){ top:10%; left:15%; }
+.beam:nth-child(2){ bottom:10%; right:15%; animation-delay:4s; }
+
+@keyframes float{
+    0%,100%{ transform:translateY(0);}
+    50%{ transform:translateY(-40px);}
+}
+
+/* Glass Card */
+.container{
+    position:relative;
+    padding:80px 120px;
+    border-radius:30px;
+    background:linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03));
+    backdrop-filter: blur(30px);
+    box-shadow:
+        0 0 80px rgba(0,255,255,0.25),
+        inset 0 0 30px rgba(255,255,255,0.08);
+    text-align:center;
+    z-index:2;
+    transition:.6s;
+}
+
+.container:hover{
+    transform: perspective(800px) rotateX(8deg) scale(1.05);
+}
+
+/* Neon Rotating Ring */
+.container::before{
+    content:"";
+    position:absolute;
+    inset:-25px;
+    border-radius:inherit;
+    background:conic-gradient(#00f5ff, #7cffcb, #00f5ff);
+    filter:blur(15px);
+    opacity:.7;
+    animation: spin 6s linear infinite;
+    z-index:-1;
+}
+
+@keyframes spin{
+    from{ transform:rotate(0deg);}
+    to{ transform:rotate(360deg);}
+}
+
+/* Heading */
+h1{
+    font-size:3rem;
+    letter-spacing:8px;
+    margin-bottom:20px;
+    text-shadow:0 0 20px rgba(0,255,255,0.7);
+}
+
+/* Animated Year Text */
+h2{
+    font-size:5.5rem;
+    font-weight:900;
+    background:linear-gradient(90deg,#00f5ff,#ffffff,#7cffcb,#00f5ff);
+    background-size:300%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation: shine 4s linear infinite;
+}
+
+@keyframes shine{
+    from{ background-position:0%; }
+    to{ background-position:300%; }
+}
+
+/* Floating Particles */
+.particle{
+    position:absolute;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:rgba(0,255,255,0.8);
+    box-shadow:0 0 10px rgba(0,255,255,0.8);
+    animation: move 10s linear infinite;
+}
+
+@keyframes move{
+    from{
+        transform:translateY(0);
+        opacity:0;
+    }
+    50%{ opacity:1;}
+    to{
+        transform:translateY(-200px);
+        opacity:0;
+    }
+}
+
+/* Random placement */
+.p1{ left:10%; bottom:0%; animation-delay:0s;}
+.p2{ left:25%; bottom:0%; animation-delay:2s;}
+.p3{ left:40%; bottom:0%; animation-delay:4s;}
+.p4{ left:60%; bottom:0%; animation-delay:1s;}
+.p5{ left:75%; bottom:0%; animation-delay:3s;}
+.p6{ left:90%; bottom:0%; animation-delay:5s;}
+
+</style>
+</head>
+
+<body>
+
+<div class="beam"></div>
+<div class="beam"></div>
+
+<div class="container">
+    <h1>ENTER THE FUTURE</h1>
+    <h2>2026</h2>
+</div>
+
+<!-- Particles -->
+<div class="particle p1"></div>
+<div class="particle p2"></div>
+<div class="particle p3"></div>
+<div class="particle p4"></div>
+<div class="particle p5"></div>
+<div class="particle p6"></div>
+
+</body>
+</html>

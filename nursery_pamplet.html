@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eden Garden Nursery</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    background: linear-gradient(to bottom, #a3c2a3, #f8fbf8);
+    color:#2f4f2f;
+    scroll-behavior:smooth;
+}
+
+/* NAVBAR */
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 50px;
+    position:fixed;
+    width:100%;
+    top:0;
+    backdrop-filter: blur(10px);
+    background: rgba(174, 172, 172, 0.4);
+    box-shadow:0 4px 20px rgba(0,0,0,0.05);
+    z-index:1000;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:600;
+    letter-spacing:1px;
+}
+
+.nav-links a{
+    margin:0 15px;
+    text-decoration:none;
+    color:#2f4f2f;
+    font-weight:500;
+    transition:0.3s;
+}
+
+.nav-links a:hover{
+    color:#375237;
+}
+
+/* HERO */
+
+.hero{
+    height:100vh;
+    background:url("https://i.pinimg.com/736x/24/ca/6b/24ca6bc6305be6a25f7093786fd9c398.jpg") center/cover no-repeat;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:white;
+    padding:20px;
+}
+
+.hero-content{
+    background:rgba(0,0,0,0.35);
+    padding:40px;
+    border-radius:20px;
+    backdrop-filter: blur(5px);
+}
+
+.hero h1{
+    font-size:55px;
+    margin-bottom:15px;
+}
+
+.hero p{
+    font-size:18px;
+    margin-bottom:25px;
+}
+
+.btn{
+    padding:12px 28px;
+    border:none;
+    border-radius:30px;
+    background:#476947;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn:hover{
+    background:#3e663e;
+    transform:scale(1.05);
+}
+
+/* SECTION */
+
+section{
+    padding:100px 60px;
+    text-align:center;
+}
+
+.section-title{
+    font-size:36px;
+    margin-bottom:40px;
+}
+
+/* PLANT CARDS */
+
+.plant-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:30px;
+}
+
+.card{
+    background:white;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    transition:0.4s;
+}
+
+.card:hover{
+    transform:translateY(-10px) scale(1.02);
+}
+
+.card img{
+    width:100%;
+    height:250px;
+    object-fit:cover;
+}
+
+.card h3{
+    margin:15px 0 10px;
+}
+
+.card p{
+    padding:0 20px 20px;
+    font-size:14px;
+    color:#555;
+}
+
+/* ABOUT */
+
+.about{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.06);
+    line-height:1.6;
+}
+
+/* TESTIMONIALS */
+
+.testimonials{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.testimonial{
+    background:#ffffff;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.06);
+    font-size:14px;
+}
+
+/* CONTACT */
+
+.contact{
+    background:linear-gradient(to right,#243d26,#3f763f);
+    border-radius:20px;
+    padding:40px;
+    max-width:800px;
+    margin:auto;
+}
+
+input, textarea{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border-radius:10px;
+    border:1px solid #ccc;
+    font-size:14px;
+}
+
+/* FOOTER */
+
+footer{
+    text-align:center;
+    padding:20px;
+    margin-top:50px;
+    background:#dfeee0;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">🌿 EDEN GARDEN</div>
+    <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#plants">Plants</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+    <div class="hero-content">
+        <h1>Welcome to Eden Garden</h1>
+        <p>Bringing peace, beauty, and nature closer to your heart 🌱</p>
+        <button class="btn">Explore Plants</button>
+    </div>
+</section>
+
+<!-- PLANTS -->
+<section id="plants">
+    <h2 class="section-title">Our Plants</h2>
+
+    <div class="plant-container">
+
+        <div class="card">
+            <img src="https://i.pinimg.com/1200x/fc/0b/a0/fc0ba0fdc7bdd0c2446a8378b6f02076.jpg">
+            <h3>Flowering Plants</h3>
+            <p>Brighten your surroundings with colorful blossoms and natural fragrance.</p>
+        </div>
+
+        <div class="card">
+            <img src="https://i.pinimg.com/736x/85/41/dc/8541dcb78f318da8ed5e5b6839bb198d.jpg">
+            <h3>Succulents</h3>
+            <p>Minimal care, maximum beauty — perfect for modern homes.</p>
+        </div>
+
+        <div class="card">
+            <img src="https://i.pinimg.com/1200x/bb/34/ca/bb34ca6fab50632fc875a2c6fd7fc229.jpg">
+            <h3>Indoor Plants</h3>
+            <p>Create calm interiors with lush green indoor companions.</p>
+        </div>
+    </div>
+</section>
+<!-- ABOUT -->
+<section id="about">
+    <h2 class="section-title">About Us</h2>
+    <div class="about">
+        Eden Garden is a peaceful plant nursery dedicated to nurturing life and
+        bringing nature into everyday spaces. Our plants are grown with love,
+        care, and sustainability in mind — helping you create a calm and
+        refreshing environment wherever you are.
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section>
+    <h2 class="section-title">What Our Customers Say</h2>
+
+    <div class="testimonials">
+
+        <div class="testimonial">
+            🌿 “Beautiful plants and excellent quality. My home feels alive now!”
+            <br><br><b>— Priya</b>
+        </div>
+
+        <div class="testimonial">
+            🌸 “Very calming experience visiting Eden Garden. Highly recommended.”
+            <br><br><b>— Rahul</b>
+        </div>
+
+        <div class="testimonial">
+            🌱 “Healthy plants and great guidance for beginners.”
+            <br><br><b>— Ananya</b>
+        </div>
+
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+    <h2 class="section-title">Contact Us</h2>
+
+    <div class="contact">
+        <input type="text" placeholder="Your Name">
+        <input type="email" placeholder="Your Email">
+        <textarea rows="4" placeholder="Your Message"></textarea>
+        <button class="btn">Send Message</button>
+    </div>
+</section>
+
+<footer>
+    © 2026 Eden Garden 🌿 | Designed with Calm Nature Aesthetic
+</footer>
+
+</body>
+</html>
