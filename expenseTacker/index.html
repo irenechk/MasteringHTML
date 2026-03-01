@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expense Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c28;
+  --border:#2a2a3d;--accent:#f5c842;--text:#f0ede8;
+  --muted:#6b6b85;--success:#4ecb71;--danger:#ff5e5e;--warn:#ff9f43;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 600px 400px at 80% 10%,rgba(245,200,66,.06) 0%,transparent 70%),
+             radial-gradient(ellipse 400px 300px at 10% 90%,rgba(91,143,255,.06) 0%,transparent 70%);}
+.container{max-width:1200px;margin:0 auto;padding:40px 24px;position:relative;z-index:1;}
+
+/* Header */
+header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;animation:fadeUp .6s ease both;}
+.logo{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;letter-spacing:-1px;line-height:1;}
+.logo span{color:var(--accent);}
+.date-badge{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:8px 18px;font-size:.8rem;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;}
+
+/* Summary */
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;animation:fadeUp .6s .1s ease both;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;position:relative;overflow:hidden;transition:transform .2s,border-color .2s;}
+.card:hover{transform:translateY(-2px);border-color:var(--accent);}
+.card::after{content:'';position:absolute;top:0;right:0;width:80px;height:80px;border-radius:50%;opacity:.08;transform:translate(20px,-20px);}
+.card.total::after{background:var(--accent);}.card.income::after{background:var(--success);}.card.expense::after{background:var(--danger);}
+.card-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:12px;}
+.card-amount{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;line-height:1;}
+.card.total .card-amount{color:var(--accent);}.card.income .card-amount{color:var(--success);}.card.expense .card-amount{color:var(--danger);}
+.card-icon{position:absolute;top:24px;right:24px;font-size:1.4rem;opacity:.6;}
+
+/* Alert */
+.budget-alert{border-radius:16px;padding:16px 22px;display:flex;align-items:center;gap:14px;margin-bottom:24px;}
+.budget-alert.warning{background:rgba(255,159,67,.1);border:1px solid rgba(255,159,67,.4);}
+.budget-alert.exceeded{background:rgba(255,94,94,.12);border:1px solid rgba(255,94,94,.5);}
+.alert-icon{font-size:1.6rem;flex-shrink:0;}
+.alert-text{flex:1;}
+.alert-title{font-weight:700;font-size:.95rem;margin-bottom:2px;}
+.budget-alert.warning .alert-title{color:var(--warn);}.budget-alert.exceeded .alert-title{color:var(--danger);}
+.alert-sub{font-size:.82rem;color:var(--muted);}
+.alert-close{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:1.1rem;padding:4px 8px;border-radius:8px;transition:color .2s;line-height:1;}
+.alert-close:hover{color:var(--danger);}
+
+/* Layout */
+.main-grid{display:grid;grid-template-columns:360px 1fr;gap:24px;align-items:start;}
+
+/* Form */
+.form-panel{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:28px;animation:fadeUp .6s .2s ease both;position:sticky;top:24px;}
+.panel-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;margin-bottom:20px;}
+.type-toggle{display:grid;grid-template-columns:1fr 1fr;background:var(--surface2);border-radius:12px;padding:4px;margin-bottom:20px;}
+.type-btn{padding:10px;border:none;background:transparent;color:var(--muted);border-radius:9px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;transition:all .2s;}
+.type-btn.active{background:var(--surface);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.3);}
+.type-btn.active.income{color:var(--success);}.type-btn.active.expense{color:var(--danger);}
+.form-group{margin-bottom:15px;}
+label{display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:7px;}
+input,select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:13px 16px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none;}
+input:focus,select:focus{border-color:var(--accent);}
+input::placeholder{color:var(--muted);}
+select option{background:var(--surface2);}
+.amount-wrap{position:relative;}
+.currency{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
+.amount-wrap input{padding-left:28px;}
+.blocked-msg{background:rgba(255,94,94,.12);border:1px solid rgba(255,94,94,.4);border-radius:12px;padding:13px 16px;margin-bottom:14px;text-align:center;color:var(--danger);font-size:.88rem;font-weight:600;display:none;}
+.blocked-msg.show{display:block;}
+.inputs-locked input,.inputs-locked select{opacity:.35;pointer-events:none;}
+.submit-btn{width:100%;padding:15px;background:var(--accent);color:#0a0a0f;border:none;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-top:4px;transition:all .2s;letter-spacing:.02em;}
+.submit-btn:hover:not(:disabled){background:#ffd95a;transform:translateY(-1px);box-shadow:0 8px 24px rgba(245,200,66,.3);}
+.submit-btn:disabled{background:#2a2a1a;color:#5a5a30;cursor:not-allowed;}
+.divider{border:none;border-top:1px solid var(--border);margin:20px 0;}
+.budget-limit-row{display:flex;gap:10px;align-items:flex-end;}
+.budget-limit-row .form-group{flex:1;margin-bottom:0;}
+.set-limit-btn{padding:13px 16px;background:var(--surface2);color:var(--accent);border:1px solid var(--accent);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;}
+.set-limit-btn:hover{background:rgba(245,200,66,.1);}
+.clear-limit-btn{padding:5px 12px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.78rem;cursor:pointer;transition:all .2s;margin-top:8px;}
+.clear-limit-btn:hover{border-color:var(--danger);color:var(--danger);}
+.limit-status-row{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--muted);margin-top:12px;}
+.limit-bar-wrap{height:6px;background:var(--surface2);border-radius:100px;overflow:hidden;margin-top:8px;}
+.limit-bar-fill{height:100%;border-radius:100px;transition:width .5s cubic-bezier(.4,0,.2,1),background .3s;}
+.limit-remaining{margin-top:5px;font-size:.78rem;color:var(--muted);text-align:right;}
+
+/* Right */
+.right-panel{display:flex;flex-direction:column;gap:20px;animation:fadeUp .6s .3s ease both;}
+
+/* Chart panel */
+.chart-panel{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:28px;}
+.chart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;}
+.chart-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;}
+.chart-tabs{display:flex;gap:6px;}
+.chart-tab{padding:5px 14px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.chart-tab.active,.chart-tab:hover{background:var(--accent);color:#0a0a0f;border-color:var(--accent);}
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.chart-box-title{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px;}
+.chart-canvas-wrap{position:relative;width:100%;height:220px;background:var(--surface2);border-radius:12px;overflow:hidden;}
+.chart-canvas-wrap canvas{display:block;width:100%;height:100%;}
+
+/* Savings */
+.budget-bar{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 22px;}
+.budget-header{display:flex;justify-content:space-between;font-size:.82rem;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;}
+.progress-track{height:6px;background:var(--surface2);border-radius:100px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--success),var(--accent));transition:width .5s cubic-bezier(.4,0,.2,1);}
+
+/* List */
+.list-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.list-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;}
+.filter-row{display:flex;gap:8px;margin-bottom:14px;}
+.filter-chip{padding:6px 14px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.filter-chip.active,.filter-chip:hover{background:var(--accent);color:#0a0a0f;border-color:var(--accent);}
+.transactions{display:flex;flex-direction:column;gap:10px;}
+.tx-item{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px;transition:all .2s;animation:slideIn .3s ease both;position:relative;overflow:hidden;}
+.tx-item:hover{transform:translateX(4px);}
+.tx-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:0 2px 2px 0;}
+.tx-item.income-tx::before{background:var(--success);}.tx-item.expense-tx::before{background:var(--danger);}
+.tx-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.income-tx .tx-icon{background:rgba(78,203,113,.12);}.expense-tx .tx-icon{background:rgba(255,94,94,.12);}
+.tx-info{flex:1;min-width:0;}
+.tx-desc{font-weight:500;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tx-meta{font-size:.75rem;color:var(--muted);margin-top:3px;display:flex;gap:8px;align-items:center;}
+.tx-cat{background:var(--surface);padding:2px 8px;border-radius:100px;}
+.tx-amount{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;flex-shrink:0;}
+.income-tx .tx-amount{color:var(--success);}.expense-tx .tx-amount{color:var(--danger);}
+.tx-delete{background:transparent;border:none;color:var(--muted);cursor:pointer;padding:5px;border-radius:8px;font-size:.85rem;transition:all .2s;flex-shrink:0;}
+.tx-delete:hover{background:rgba(255,94,94,.15);color:var(--danger);}
+.empty-state{text-align:center;padding:50px 20px;color:var(--muted);}
+.empty-icon{font-size:2.5rem;margin-bottom:10px;opacity:.4;}
+
+/* Toast */
+.toast{position:fixed;bottom:32px;right:32px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 20px;font-size:.9rem;max-width:360px;box-shadow:0 16px 48px rgba(0,0,0,.5);transform:translateY(120px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);z-index:200;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.success{border-left:3px solid var(--success);}.toast.remove{border-left:3px solid var(--danger);}.toast.warning{border-left:3px solid var(--warn);}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:300;opacity:0;pointer-events:none;transition:opacity .3s;}
+.modal-overlay.show{opacity:1;pointer-events:all;}
+.modal{background:var(--surface);border:1px solid rgba(255,94,94,.5);border-radius:24px;padding:44px 36px;max-width:440px;width:90%;text-align:center;transform:scale(.85) translateY(20px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
+.modal-overlay.show .modal{transform:scale(1) translateY(0);}
+.modal-bomb{font-size:3.8rem;margin-bottom:16px;display:block;animation:bounce .6s ease infinite alternate;}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;color:var(--danger);margin-bottom:10px;}
+.modal-msg{color:var(--muted);line-height:1.7;font-size:.95rem;margin-bottom:28px;}
+.modal-msg strong{color:var(--text);}.modal-msg .hl{color:var(--danger);font-weight:700;}
+.modal-actions{display:flex;gap:12px;justify-content:center;}
+.modal-btn{background:var(--danger);color:#fff;border:none;padding:14px 28px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.modal-btn:hover{background:#ff7a7a;transform:translateY(-1px);}
+.modal-btn-sec{background:transparent;color:var(--muted);border:1px solid var(--border);padding:14px 28px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.95rem;cursor:pointer;transition:all .2s;}
+.modal-btn-sec:hover{border-color:var(--accent);color:var(--accent);}
+.hidden{display:none!important;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:translateX(0);}}
+@keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-8px);}}
+
+@media(max-width:900px){.main-grid{grid-template-columns:1fr;}.charts-grid{grid-template-columns:1fr;}.form-panel{position:static;}}
+@media(max-width:600px){.summary{grid-template-columns:1fr;}header{flex-direction:column;gap:12px;align-items:flex-start;}}
+</style>
+</head>
+<body>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <span class="modal-bomb">🚨</span>
+    <div class="modal-title">Budget Exceeded!</div>
+    <div class="modal-msg" id="modalMsg">Your monthly spending has crossed the limit.</div>
+    <div class="modal-actions">
+      <button class="modal-btn-sec" onclick="closeModal()">Dismiss</button>
+      <button class="modal-btn" onclick="closeModal()">Got it!</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <header>
+    <div class="logo">Expense<span>.</span></div>
+    <div class="date-badge" id="currentDate"></div>
+  </header>
+
+  <!-- Alert banner -->
+  <div id="budgetAlertBanner" class="budget-alert hidden">
+    <div class="alert-icon" id="bannerIcon">⚠️</div>
+    <div class="alert-text">
+      <div class="alert-title" id="bannerTitle">Approaching Limit</div>
+      <div class="alert-sub"   id="bannerSub">You are near your monthly budget.</div>
+    </div>
+    <button class="alert-close" onclick="this.closest('.budget-alert').classList.add('hidden')">✕</button>
+  </div>
+
+  <!-- Summary cards -->
+  <div class="summary">
+    <div class="card total">
+      <div class="card-label">Net Balance</div>
+      <div class="card-amount" id="totalBalance">₹0</div>
+      <div class="card-icon">⚖️</div>
+    </div>
+    <div class="card income">
+      <div class="card-label">Total Income</div>
+      <div class="card-amount" id="totalIncome">₹0</div>
+      <div class="card-icon">📈</div>
+    </div>
+    <div class="card expense">
+      <div class="card-label">Total Expenses</div>
+      <div class="card-amount" id="totalExpense">₹0</div>
+      <div class="card-icon">📉</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <!-- LEFT: Form -->
+    <div class="form-panel">
+      <div class="panel-title">Add Transaction</div>
+      <div class="type-toggle">
+        <button class="type-btn active income" id="incomeBtn"  onclick="setType('income')">↑ Income</button>
+        <button class="type-btn expense"        id="expenseBtn" onclick="setType('expense')">↓ Expense</button>
+      </div>
+      <div class="blocked-msg" id="blockedMsg">🔒 Monthly limit reached — expenses are locked!</div>
+      <div id="expenseInputs">
+        <div class="form-group">
+          <label>Description</label>
+          <input type="text" id="descInput" placeholder="What was it for?" />
+        </div>
+        <div class="form-group">
+          <label>Amount</label>
+          <div class="amount-wrap">
+            <span class="currency">₹</span>
+            <input type="number" id="amountInput" placeholder="0.00" min="0" step="0.01" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="categorySelect"></select>
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="dateInput" />
+        </div>
+      </div>
+      <button class="submit-btn" id="submitBtn" onclick="addTransaction()">+ Add Transaction</button>
+
+      <hr class="divider">
+
+      <div class="panel-title" style="font-size:1rem;margin-bottom:14px;">🎯 Monthly Budget Limit</div>
+      <div class="budget-limit-row">
+        <div class="form-group">
+          <label>Set Limit (₹)</label>
+          <div class="amount-wrap">
+            <span class="currency">₹</span>
+            <input type="number" id="limitInput" placeholder="e.g. 20000" min="0" />
+          </div>
+        </div>
+        <button class="set-limit-btn" onclick="setLimit()">Set</button>
+      </div>
+      <div id="limitStatusWrap" class="hidden">
+        <div class="limit-status-row">
+          <span id="limitStatusText">Used ₹0 of ₹0</span>
+          <span id="limitPct" style="font-weight:600;">0%</span>
+        </div>
+        <div class="limit-bar-wrap">
+          <div class="limit-bar-fill" id="limitBarFill" style="width:0%;background:var(--success);"></div>
+        </div>
+        <div class="limit-remaining" id="limitRemaining"></div>
+        <button class="clear-limit-btn" onclick="clearLimit()">✕ Remove limit</button>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right-panel">
+
+      <!-- Charts -->
+      <div class="chart-panel">
+        <div class="chart-header">
+          <div class="chart-title">Analytics</div>
+          <div class="chart-tabs">
+            <button class="chart-tab active" onclick="switchChart('bar',this)">Monthly</button>
+            <button class="chart-tab"        onclick="switchChart('line',this)">Trend</button>
+            <button class="chart-tab"        onclick="switchChart('donut',this)">Category</button>
+          </div>
+        </div>
+        <div class="charts-grid">
+          <div>
+            <div class="chart-box-title" id="chart1Label">Income vs Expenses</div>
+            <div class="chart-canvas-wrap">
+              <canvas id="mainChart"></canvas>
+            </div>
+          </div>
+          <div>
+            <div class="chart-box-title">Expense by Category</div>
+            <div class="chart-canvas-wrap">
+              <canvas id="catChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Savings bar -->
+      <div class="budget-bar">
+        <div class="budget-header">
+          <span>This Month's Savings Rate</span>
+          <span id="savingsRate">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="savingsBar" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- List -->
+      <div>
+        <div class="list-header">
+          <div class="list-title">Transactions</div>
+        </div>
+        <div class="filter-row">
+          <button class="filter-chip active" onclick="setFilter('all',this)">All</button>
+          <button class="filter-chip"        onclick="setFilter('income',this)">Income</button>
+          <button class="filter-chip"        onclick="setFilter('expense',this)">Expenses</button>
+        </div>
+        <div class="transactions" id="transactionList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════════════
+   DATA
+══════════════════════════════════════════════════ */
+let transactions = JSON.parse(localStorage.getItem('extr_v4') || '[]');
+let monthlyLimit = parseFloat(localStorage.getItem('extr_limit4') || '0');
+let currentType  = 'income';
+let currentFilter= 'all';
+let chartMode    = 'bar';
+let modalShown   = false;
+
+const INCOME_CATS  = ['💼 Salary','💰 Business','🎁 Gift','💻 Freelance','📊 Investment'];
+const EXPENSE_CATS = ['🍔 Food','🚗 Transport','🛒 Shopping','💊 Health','📚 Education','🎬 Entertainment','🏠 Rent','⚡ Utilities','📦 Other'];
+const PALETTE      = ['#f5c842','#ff5e5e','#4ecb71','#5b8fff','#ff9f43','#a29bfe','#fd79a8','#00cec9','#e17055'];
+
+/* ══════════════════════════════════════════════════
+   BOOT
+══════════════════════════════════════════════════ */
+document.getElementById('dateInput').valueAsDate = new Date();
+document.getElementById('currentDate').textContent =
+  new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+if (monthlyLimit > 0) document.getElementById('limitInput').value = monthlyLimit;
+setType('income');
+updateAll();
+
+/* ══════════════════════════════════════════════════
+   FORM LOGIC
+══════════════════════════════════════════════════ */
+function setType(t) {
+  currentType = t;
+  document.getElementById('incomeBtn').classList.toggle('active', t==='income');
+  document.getElementById('expenseBtn').classList.toggle('active', t==='expense');
+  const cats = t==='income' ? INCOME_CATS : EXPENSE_CATS;
+  document.getElementById('categorySelect').innerHTML = cats.map(c=>`<option>${c}</option>`).join('');
+  applyBlockState();
+}
+
+function isBlocked() {
+  return currentType==='expense' && monthlyLimit>0 && getMonthExp()>=monthlyLimit;
+}
+
+function applyBlockState() {
+  const blocked = isBlocked();
+  document.getElementById('submitBtn').disabled = blocked;
+  document.getElementById('blockedMsg').classList.toggle('show', blocked);
+  document.getElementById('expenseInputs').classList.toggle('inputs-locked', blocked);
+}
+
+function addTransaction() {
+  if (isBlocked()) { showToast('🔒 Limit reached — no expenses allowed!','warning'); return; }
+  const desc   = document.getElementById('descInput').value.trim();
+  const amount = parseFloat(document.getElementById('amountInput').value);
+  const cat    = document.getElementById('categorySelect').value;
+  const date   = document.getElementById('dateInput').value;
+  if (!desc || !amount || amount<=0 || !date) { showToast('⚠️ Please fill in all fields','remove'); return; }
+
+  if (currentType==='expense' && monthlyLimit>0) {
+    const left = monthlyLimit - getMonthExp();
+    if (amount > left) {
+      showToast(`🔒 Only ₹${n2(left)} left in your budget. This expense is ₹${n2(amount)}.`,'warning');
+      return;
+    }
+  }
+
+  transactions.unshift({id:Date.now(),type:currentType,desc,amount,category:cat,date});
+  save();
+  document.getElementById('descInput').value='';
+  document.getElementById('amountInput').value='';
+  updateAll();
+  showToast(currentType==='income'?'✅ Income added!':'✅ Expense logged!','success');
+}
+
+function deleteTransaction(id) {
+  transactions = transactions.filter(t=>t.id!==id);
+  save(); modalShown=false; updateAll();
+  showToast('🗑️ Transaction removed','remove');
+}
+
+function save() { localStorage.setItem('extr_v4',JSON.stringify(transactions)); }
+
+/* ══════════════════════════════════════════════════
+   BUDGET LIMIT
+══════════════════════════════════════════════════ */
+function setLimit() {
+  const v = parseFloat(document.getElementById('limitInput').value);
+  if (!v||v<=0) { showToast('⚠️ Enter a valid limit','remove'); return; }
+  monthlyLimit=v; localStorage.setItem('extr_limit4',v); modalShown=false;
+  updateAll(); showToast(`🎯 Limit set to ${fmt(v)}`,'success');
+}
+function clearLimit() {
+  monthlyLimit=0; localStorage.removeItem('extr_limit4');
+  document.getElementById('limitInput').value=''; modalShown=false;
+  updateAll(); showToast('✅ Limit removed','success');
+}
+function getMonthExp() {
+  const n=new Date();
+  return transactions.filter(t=>t.type==='expense'&&sameMonth(t.date,n)).reduce((s,t)=>s+t.amount,0);
+}
+function sameMonth(str,ref) {
+  const d=new Date(str); return d.getMonth()===ref.getMonth()&&d.getFullYear()===ref.getFullYear();
+}
+function updateLimitUI() {
+  const wrap=document.getElementById('limitStatusWrap');
+  if (!monthlyLimit) { wrap.classList.add('hidden'); return; }
+  wrap.classList.remove('hidden');
+  const used=getMonthExp(), pct=Math.min(100,(used/monthlyLimit)*100), rem=monthlyLimit-used;
+  document.getElementById('limitStatusText').textContent=`Used ${fmt(used)} of ${fmt(monthlyLimit)}`;
+  document.getElementById('limitPct').textContent=pct.toFixed(1)+'%';
+  document.getElementById('limitRemaining').textContent= rem>=0?`₹${n2(rem)} remaining`:`₹${n2(Math.abs(rem))} over limit`;
+  const fill=document.getElementById('limitBarFill');
+  fill.style.width=pct+'%';
+  fill.style.background=pct>=100?'var(--danger)':pct>=80?'var(--warn)':'var(--success)';
+  const banner=document.getElementById('budgetAlertBanner');
+  if (used>monthlyLimit) {
+    banner.className='budget-alert exceeded';
+    document.getElementById('bannerIcon').textContent='🚨';
+    document.getElementById('bannerTitle').textContent='Monthly Budget Exceeded!';
+    document.getElementById('bannerSub').textContent=`Spent ${fmt(used)} — ${fmt(used-monthlyLimit)} over your ${fmt(monthlyLimit)} limit.`;
+    banner.classList.remove('hidden');
+    if (!modalShown) {
+      modalShown=true;
+      document.getElementById('modalMsg').innerHTML=
+        `This month you've spent <strong>${fmt(used)}</strong>, which is <span class="hl">${fmt(used-monthlyLimit)} over</span> your <strong>${fmt(monthlyLimit)}</strong> limit.<br><br>No new expenses can be added this month.`;
+      setTimeout(()=>document.getElementById('modalOverlay').classList.add('show'),350);
+    }
+  } else if (pct>=80) {
+    banner.className='budget-alert warning';
+    document.getElementById('bannerIcon').textContent='⚠️';
+    document.getElementById('bannerTitle').textContent='Approaching Budget Limit!';
+    document.getElementById('bannerSub').textContent=`${pct.toFixed(0)}% used — only ${fmt(rem)} remaining.`;
+    banner.classList.remove('hidden');
+  } else {
+    banner.classList.add('hidden');
+  }
+}
+function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
+
+/* ══════════════════════════════════════════════════
+   SUMMARY
+══════════════════════════════════════════════════ */
+function updateSummary() {
+  const inc=transactions.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const exp=transactions.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
+  document.getElementById('totalBalance').textContent=fmt(inc-exp);
+  document.getElementById('totalIncome').textContent=fmt(inc);
+  document.getElementById('totalExpense').textContent=fmt(exp);
+  const n=new Date();
+  const mi=transactions.filter(t=>t.type==='income'&&sameMonth(t.date,n)).reduce((s,t)=>s+t.amount,0);
+  const me=transactions.filter(t=>t.type==='expense'&&sameMonth(t.date,n)).reduce((s,t)=>s+t.amount,0);
+  const rate=mi>0?Math.max(0,Math.min(100,Math.round((mi-me)/mi*100))):0;
+  document.getElementById('savingsRate').textContent=rate+'%';
+  document.getElementById('savingsBar').style.width=rate+'%';
+}
+
+/* ══════════════════════════════════════════════════
+   PURE CANVAS CHARTS  (no external library)
+══════════════════════════════════════════════════ */
+function getLast6Months() {
+  const res=[];
+  for (let i=5;i>=0;i--) {
+    const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()-i);
+    res.push({label:d.toLocaleDateString('en-IN',{month:'short'}), month:d.getMonth(), year:d.getFullYear()});
+  }
+  return res;
+}
+
+/* ─── Bar / Line chart ─────────────────────────── */
+function drawMainChart() {
+  const canvas = document.getElementById('mainChart');
+  const wrap   = canvas.parentElement;
+  canvas.width  = wrap.clientWidth  || 400;
+  canvas.height = wrap.clientHeight || 220;
+  const ctx = canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  const PAD={top:20,right:20,bottom:36,left:56};
+  const CW=W-PAD.left-PAD.right, CH=H-PAD.top-PAD.bottom;
+  ctx.clearRect(0,0,W,H);
+
+  const months = getLast6Months();
+  const labels = months.map(m=>m.label);
+  const incData= months.map(m=>transactions.filter(t=>t.type==='income'&&new Date(t.date).getMonth()===m.month&&new Date(t.date).getFullYear()===m.year).reduce((s,t)=>s+t.amount,0));
+  const expData= months.map(m=>transactions.filter(t=>t.type==='expense'&&new Date(t.date).getMonth()===m.month&&new Date(t.date).getFullYear()===m.year).reduce((s,t)=>s+t.amount,0));
+
+  document.getElementById('chart1Label').textContent = chartMode==='line'?'Income & Expense Trend':'Monthly Income vs Expenses';
+
+  const allVals=[...incData,...expData];
+  const maxVal =Math.max(...allVals,1);
+
+  // Grid lines
+  ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){
+    const y=PAD.top+CH-(CH/4*i);
+    ctx.beginPath(); ctx.moveTo(PAD.left,y); ctx.lineTo(PAD.left+CW,y); ctx.stroke();
+    const val=Math.round(maxVal/4*i);
+    ctx.fillStyle='#6b6b85'; ctx.font='10px DM Sans,sans-serif'; ctx.textAlign='right';
+    ctx.fillText(val>=1000?Math.round(val/1000)+'k':val, PAD.left-6, y+4);
+  }
+
+  const n=labels.length;
+  const step=CW/n;
+
+  if (chartMode==='line') {
+    // Draw line charts
+    [
+      {data:incData, color:'#4ecb71', fill:'rgba(78,203,113,0.12)'},
+      {data:expData, color:'#ff5e5e', fill:'rgba(255,94,94,0.10)'}
+    ].forEach(({data,color,fill})=>{
+      const pts=data.map((v,i)=>({
+        x:PAD.left+step*i+step/2,
+        y:PAD.top+CH-Math.max(0,v/maxVal)*CH
+      }));
+      // fill
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x,PAD.top+CH);
+      pts.forEach(p=>ctx.lineTo(p.x,p.y));
+      ctx.lineTo(pts[pts.length-1].x,PAD.top+CH);
+      ctx.closePath(); ctx.fillStyle=fill; ctx.fill();
+      // line
+      ctx.beginPath();
+      pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
+      ctx.strokeStyle=color; ctx.lineWidth=2.5; ctx.lineJoin='round'; ctx.stroke();
+      // dots
+      pts.forEach(p=>{
+        ctx.beginPath(); ctx.arc(p.x,p.y,4,0,Math.PI*2);
+        ctx.fillStyle=color; ctx.fill();
+        ctx.strokeStyle='#13131a'; ctx.lineWidth=2; ctx.stroke();
+      });
+    });
+    // legend
+    ctx.font='11px DM Sans,sans-serif'; ctx.textAlign='left';
+    ctx.fillStyle='#4ecb71'; ctx.fillRect(PAD.left,H-14,10,10);
+    ctx.fillStyle='#6b6b85'; ctx.fillText('Income', PAD.left+14, H-5);
+    ctx.fillStyle='#ff5e5e'; ctx.fillRect(PAD.left+70,H-14,10,10);
+    ctx.fillStyle='#6b6b85'; ctx.fillText('Expense',PAD.left+84,H-5);
+  } else {
+    // Bar chart
+    const bw=step*0.35, gap=step*0.05;
+    incData.forEach((v,i)=>{
+      const x=PAD.left+step*i+gap;
+      const bh=Math.max(0,(v/maxVal)*CH);
+      const y=PAD.top+CH-bh;
+      // rounded top bar
+      const r=4;
+      ctx.beginPath();
+      ctx.moveTo(x+r,y); ctx.lineTo(x+bw-r,y);
+      ctx.quadraticCurveTo(x+bw,y,x+bw,y+r);
+      ctx.lineTo(x+bw,PAD.top+CH); ctx.lineTo(x,PAD.top+CH); ctx.lineTo(x,y+r);
+      ctx.quadraticCurveTo(x,y,x+r,y);
+      ctx.closePath(); ctx.fillStyle='rgba(78,203,113,0.8)'; ctx.fill();
+    });
+    expData.forEach((v,i)=>{
+      const x=PAD.left+step*i+bw+gap*3;
+      const bh=Math.max(0,(v/maxVal)*CH);
+      const y=PAD.top+CH-bh;
+      const r=4;
+      ctx.beginPath();
+      ctx.moveTo(x+r,y); ctx.lineTo(x+bw-r,y);
+      ctx.quadraticCurveTo(x+bw,y,x+bw,y+r);
+      ctx.lineTo(x+bw,PAD.top+CH); ctx.lineTo(x,PAD.top+CH); ctx.lineTo(x,y+r);
+      ctx.quadraticCurveTo(x,y,x+r,y);
+      ctx.closePath(); ctx.fillStyle='rgba(255,94,94,0.8)'; ctx.fill();
+    });
+    // legend
+    ctx.font='11px DM Sans,sans-serif'; ctx.textAlign='left';
+    ctx.fillStyle='rgba(78,203,113,0.8)'; ctx.fillRect(PAD.left,H-14,10,10);
+    ctx.fillStyle='#6b6b85'; ctx.fillText('Income', PAD.left+14, H-5);
+    ctx.fillStyle='rgba(255,94,94,0.8)'; ctx.fillRect(PAD.left+70,H-14,10,10);
+    ctx.fillStyle='#6b6b85'; ctx.fillText('Expense',PAD.left+84,H-5);
+  }
+
+  // X labels
+  ctx.fillStyle='#6b6b85'; ctx.font='11px DM Sans,sans-serif'; ctx.textAlign='center';
+  labels.forEach((l,i)=>ctx.fillText(l, PAD.left+step*i+step/2, PAD.top+CH+18));
+}
+
+/* ─── Donut / Category bar chart ──────────────── */
+function drawCatChart() {
+  const canvas = document.getElementById('catChart');
+  const wrap   = canvas.parentElement;
+  canvas.width  = wrap.clientWidth  || 400;
+  canvas.height = wrap.clientHeight || 220;
+  const ctx = canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  const expenses=transactions.filter(t=>t.type==='expense');
+  const catMap={};
+  expenses.forEach(t=>{ catMap[t.category]=(catMap[t.category]||0)+t.amount; });
+  const sorted=Object.entries(catMap).sort((a,b)=>b[1]-a[1]);
+
+  if (!sorted.length) {
+    ctx.fillStyle='#6b6b85'; ctx.font='13px DM Sans,sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('No expenses yet', W/2, H/2);
+    return;
+  }
+
+  if (chartMode==='donut') {
+    // Donut chart
+    const total=sorted.reduce((s,e)=>s+e[1],0);
+    const cx=W*0.38, cy=H/2, outerR=Math.min(cx,cy)*0.82, innerR=outerR*0.58;
+    let angle=-Math.PI/2;
+    sorted.forEach(([cat,val],i)=>{
+      const slice=(val/total)*Math.PI*2;
+      ctx.beginPath();
+      ctx.moveTo(cx,cy); ctx.arc(cx,cy,outerR,angle,angle+slice);
+      ctx.closePath(); ctx.fillStyle=PALETTE[i%PALETTE.length]; ctx.fill();
+      ctx.strokeStyle='#13131a'; ctx.lineWidth=2; ctx.stroke();
+      angle+=slice;
+    });
+    // hole
+    ctx.beginPath(); ctx.arc(cx,cy,innerR,0,Math.PI*2);
+    ctx.fillStyle='#1c1c28'; ctx.fill();
+    // center text
+    ctx.fillStyle='#f0ede8'; ctx.font='bold 13px DM Sans,sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(fmt(total), cx, cy);
+    // legend
+    const lx=W*0.72, ly=H/2-(sorted.length*18)/2;
+    sorted.slice(0,7).forEach(([cat,val],i)=>{
+      const label=cat.split(' ').slice(1).join(' ')||cat;
+      ctx.fillStyle=PALETTE[i%PALETTE.length];
+      ctx.fillRect(lx,ly+i*20,10,10);
+      ctx.fillStyle='#6b6b85'; ctx.font='10px DM Sans,sans-serif';
+      ctx.textAlign='left'; ctx.textBaseline='alphabetic';
+      ctx.fillText(label.length>10?label.slice(0,10)+'…':label, lx+14, ly+i*20+9);
+    });
+  } else {
+    // Horizontal bar by category
+    const PAD={top:10,right:16,bottom:10,left:8};
+    const maxVal=sorted[0][1];
+    const rowH=Math.min(28, (H-PAD.top-PAD.bottom)/sorted.length);
+    const labelW=90, barAreaW=W-PAD.left-PAD.right-labelW-50;
+
+    sorted.slice(0,7).forEach(([cat,val],i)=>{
+      const y=PAD.top+i*rowH;
+      const label=cat.split(' ').slice(1).join(' ')||cat;
+      // label
+      ctx.fillStyle='#6b6b85'; ctx.font='10px DM Sans,sans-serif';
+      ctx.textAlign='right'; ctx.textBaseline='middle';
+      const shortLabel=label.length>12?label.slice(0,12)+'…':label;
+      ctx.fillText(shortLabel, PAD.left+labelW, y+rowH*0.5);
+      // bar
+      const bw=Math.max(4,(val/maxVal)*barAreaW);
+      const bx=PAD.left+labelW+6, by=y+rowH*0.15, bh=rowH*0.65;
+      ctx.beginPath();
+      const r=3;
+      ctx.moveTo(bx+r,by); ctx.lineTo(bx+bw-r,by);
+      ctx.quadraticCurveTo(bx+bw,by,bx+bw,by+r);
+      ctx.lineTo(bx+bw,by+bh-r); ctx.quadraticCurveTo(bx+bw,by+bh,bx+bw-r,by+bh);
+      ctx.lineTo(bx+r,by+bh); ctx.quadraticCurveTo(bx,by+bh,bx,by+bh-r);
+      ctx.lineTo(bx,by+r); ctx.quadraticCurveTo(bx,by,bx+r,by);
+      ctx.closePath();
+      ctx.fillStyle=PALETTE[i%PALETTE.length]; ctx.fill();
+      // value
+      const dispVal=val>=1000?'₹'+(val/1000).toFixed(0)+'k':'₹'+Math.round(val);
+      ctx.fillStyle='#f0ede8'; ctx.font='10px DM Sans,sans-serif';
+      ctx.textAlign='left'; ctx.textBaseline='middle';
+      ctx.fillText(dispVal, bx+bw+6, y+rowH*0.5);
+    });
+  }
+}
+
+function drawCharts() { drawMainChart(); drawCatChart(); }
+
+function switchChart(mode, el) {
+  chartMode=mode;
+  document.querySelectorAll('.chart-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  drawCharts();
+}
+
+/* ══════════════════════════════════════════════════
+   LIST
+══════════════════════════════════════════════════ */
+function setFilter(f,el) {
+  currentFilter=f;
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active'); renderList();
+}
+function renderList() {
+  const list=document.getElementById('transactionList');
+  const data=currentFilter==='all'?transactions:transactions.filter(t=>t.type===currentFilter);
+  if (!data.length) {
+    list.innerHTML=`<div class="empty-state"><div class="empty-icon">🪙</div><div>No transactions yet.<br>Add one above!</div></div>`;
+    return;
+  }
+  list.innerHTML=data.map(t=>{
+    const icon=t.category.split(' ')[0];
+    const sign=t.type==='income'?'+':'-';
+    const d=new Date(t.date).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+    return `<div class="tx-item ${t.type}-tx">
+      <div class="tx-icon">${icon}</div>
+      <div class="tx-info">
+        <div class="tx-desc">${t.desc}</div>
+        <div class="tx-meta"><span>${d}</span><span class="tx-cat">${t.category}</span></div>
+      </div>
+      <div class="tx-amount">${sign}${fmt(t.amount)}</div>
+      <button class="tx-delete" onclick="deleteTransaction(${t.id})">✕</button>
+    </div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════════════ */
+function fmt(n) { return '₹'+Math.abs(n).toLocaleString('en-IN',{minimumFractionDigits:0,maximumFractionDigits:0}); }
+function n2(n)  { return (+n).toLocaleString('en-IN',{minimumFractionDigits:0,maximumFractionDigits:0}); }
+
+function updateAll() {
+  updateSummary(); renderList(); drawCharts(); updateLimitUI(); applyBlockState();
+}
+
+let toastTimer;
+function showToast(msg,type) {
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.className=`toast ${type} show`;
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),3500);
+}
+
+// Redraw charts on resize
+window.addEventListener('resize',()=>{ clearTimeout(window._rt); window._rt=setTimeout(drawCharts,200); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeModal(); if(e.key==='Enter'&&(e.ctrlKey||e.metaKey))addTransaction(); });
+</script>
+</body>
+</html>
