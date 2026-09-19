@@ -53,7 +53,7 @@ This repository serves as:
 ## 👩‍💻 Author
 
 **Irene Koner**
-BTech CSE Student | Frontend Enthusiast
+BTech CSE Student
 
 ---
 
